@@ -1,26 +1,930 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* --- The desktop app's palette, verbatim.
+       design/tokens.json is the source; scripts/tokens.py writes src/styles.css
+       from it. These are copied rather than generated, so a colour changed
+       there has to be changed here too.
+
+       The surfaces are a ladder: floor is the bottom, and anything sitting on
+       something else takes the next rung up. Nothing skips a rung, and nothing
+       invents a colour between two.
+
+       The literals live here rather than behind var() on purpose: Tailwind can
+       only work out `border-blue/40` if it knows what blue is, and a theme
+       value that is a var() silently comes out at full strength. --- */
+@theme {
+  /* the ladder: bg, bg-main, panel, field, raised */
+  --color-floor: #000000;
+  --color-main: #0c0c0c;
+  --color-panel: #17171a;
+  --color-field: #1c1c1e;
+  --color-raised: #3a3a3c;
+  --color-active: #1f1f21;
+
+  --color-fill-1: rgba(255, 255, 255, 0.035);
+  --color-fill-2: rgba(255, 255, 255, 0.06);
+  --color-fill-3: rgba(255, 255, 255, 0.11);
+  --color-line: rgba(255, 255, 255, 0.09);
+  --color-branch: rgba(255, 255, 255, 0.13);
+
+  --color-fg: #f2f2f2;
+  --color-fg-2: #8e8e93;
+  --color-fg-3: #636366;
+
+  --color-blue: #0a84ff;
+  --color-link: #4a9dff;
+  --color-green: #30d158;
+  --color-amber: #f0b232;
+  --color-red: #ff453a;
+
+  /* The app's ladder, even the whole way up: a chip is 8, a control 10, a card
+     12, a tile 14, a surface 16, a sheet 18. Pill is the one that is not a
+     step - it means "as round as this gets", whatever height it lands at. */
+  --radius-chip: 8px;
+  --radius-control: 10px;
+  --radius-card: 12px;
+  --radius-tile: 14px;
+  --radius-surface: 16px;
+  --radius-sheet: 18px;
+  --radius-pill: 999px;
 }
 
+/* The fonts have to stay inline: next/font defines --font-inter on a wrapper
+   div, so a :root value of var(--font-inter) would resolve to nothing. Inline
+   substitutes the reference into the utility, where the wrapper is in scope. */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-instrument-serif);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* The app's own names for the same values, for raw CSS and arbitrary values. */
+:root {
+  --bg: var(--color-floor);
+  --bg-main: var(--color-main);
+  --panel: var(--color-panel);
+  --field: var(--color-field);
+  --raised: var(--color-raised);
+  --line: var(--color-line);
+  --text: var(--color-fg);
+  --text-2: var(--color-fg-2);
+  --text-3: var(--color-fg-3);
+  --blue: var(--color-blue);
+
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  --shadow-float: 0 4px 12px rgba(0, 0, 0, 0.45);
+
+  --app-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Inter,
+    sans-serif;
+
+  --background: var(--color-floor);
+  --foreground: var(--color-fg);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+}
+
+/* The mocks are pictures of the app, so they are set in the app's own type
+   rather than the page's. On this machine that is SF Pro Text. */
+.app-ui {
+  font-family: var(--app-font);
+}
+
+/* --- Hero entrance animations --- */
+
+.hero-enter {
+  animation: hero-enter 0.7s both;
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.hero-rise {
+  animation: hero-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--hero-delay, 0s);
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Headline lines slide up out of a clipped "slot" */
+.slot-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.slot-inner {
+  display: inline-block;
+  animation: slot-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--slot-delay, 0s);
+}
+
+@keyframes slot-up {
+  from {
+    opacity: 0;
+    transform: translateY(105%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-enter,
+  .hero-rise,
+  .slot-inner {
+    animation: none;
+  }
+}
+
+/* The window is shown at a fraction of its real size: the real thing at its
+   real measurements, just further away. Scaling rather than picking smaller
+   numbers keeps every proportion the app actually has - the 268px sidebar
+   against 15px text against the 34px gutter.
+
+   How much of a fraction is a per-breakpoint variable, because what has to fit
+   is fixed: the sidebar alone wants about 480px of height in its collapsed rail
+   and 580px with the full roster, and the slot it goes in is 290px tall on a
+   phone. The inner box is sized 1/s so that after scaling it fills the slot
+   exactly; the slot clips, because before the transform the box really is
+   larger. */
+
+.hero-window-scale {
+  --s: var(--win-scale, 0.8);
+  width: calc(100% / var(--s));
+  height: calc(100% / var(--s));
+  transform: scale(var(--s));
+  transform-origin: top left;
+}
+
+/* --- The hero card is cut around the window ---
+   The card and the window are laid out from the same variables, so the gap
+   between them cannot drift: the notch is exactly the window's box plus the
+   gap. border-radius and clip-path compose rather than replace each other, so
+   the card keeps its rounded outer corners and only the notch is cut.
+
+   The frame is a container, which is what makes the shape possible: cqw is the
+   card's own content width, so the window's height can be derived from its
+   width and still be a length the clip-path can use on the y axis. That locks
+   the window to 3:2 at every size - tuning height and width separately is what
+   had it drifting towards a square. (100vw would not do: it counts the
+   scrollbar, and the window would sit wider than the card it is cut out of.)
+
+   Two shapes, because a phone is not a wide screen turned sideways:
+
+   - On a wide screen the notch is the top-right corner and the card is an L,
+     an arm down the left and a bar along the bottom.
+   - In portrait that same L would leave the window about 40px of width. So the
+     notch is a slot below the navbar instead, reaching the right edge, and the
+     card wraps it on three sides. One connected piece, one continuous gradient,
+     cut by the same rule.
+
+   The slot's top is arithmetic, not a guess: the card's padding, plus the
+   navbar's height, plus the gap. That is why the navbar is given an explicit
+   height below lg - an auto one would drift and take the notch with it. */
+
+.hero-frame {
+  container-type: inline-size;
+  --hero-pad: 16px;
+  --nav-h: 56px;
+  /* Matches the content column's gap-6, so the slot lines up with the box that
+     holds its room open in the flow. */
+  --win-gap: 24px;
+  --win-r: 16px;
+  --win-arm: 9cqw;
+  --win-w: calc(100cqw - var(--win-arm) - var(--win-gap));
+  /* Portrait can afford a tall window - the page scrolls anyway - and a taller
+     one is what lets the whole roster show at a small scale. A wide screen
+     cannot: the bottom bar of the L still owes the headline and buttons about
+     240px, so there it stays near 3:2. */
+  --win-ratio: 1.15;
+  --win-h: calc(var(--win-w) / var(--win-ratio));
+  --win-top: calc(var(--hero-pad) + var(--nav-h) + var(--win-gap));
+  /* A 310px-wide slot showing a whole desktop window. The scale is what makes
+     it a miniature of the app rather than a crop of it. */
+  --win-scale: 0.44;
+}
+
+@media (min-width: 640px) {
+  .hero-frame {
+    --hero-pad: 24px;
+    --win-ratio: 1.25;
+    --win-scale: 0.48;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-frame {
+    --hero-pad: 32px;
+    --win-ratio: 1.35;
+    --win-scale: 0.52;
+  }
+}
+
+/* ---- portrait and tablet: a slot below the navbar */
+@media (max-width: 1023.98px) {
+  .hero-frame__window {
+    position: absolute;
+    top: var(--win-top);
+    right: 0;
+    left: calc(var(--win-arm) + var(--win-gap));
+    height: var(--win-h);
+  }
+
+  .hero-frame__card {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(var(--win-top) - var(--win-gap)),
+      var(--win-arm) calc(var(--win-top) - var(--win-gap)),
+      var(--win-arm) calc(var(--win-top) + var(--win-h) + var(--win-gap)),
+      100% calc(var(--win-top) + var(--win-h) + var(--win-gap)),
+      100% 100%,
+      0 100%
+    );
+  }
+
+  /* The same slot with its four corners rounded. Two are tips of the card and
+     turn with the boundary (cw); the two on the arm are inside corners, where
+     it turns the other way and the fillet bulges into the slot (ccw). */
+  @supports (clip-path: shape(from 0 0, line to 10px 10px)) {
+    .hero-frame__card {
+      clip-path: shape(
+        from 0 0,
+        hline to 100%,
+        vline to calc(var(--win-top) - var(--win-gap) - var(--win-r)),
+        arc to calc(100% - var(--win-r)) calc(var(--win-top) - var(--win-gap))
+          of var(--win-r) cw,
+        hline to calc(var(--win-arm) + var(--win-r)),
+        arc to var(--win-arm) calc(var(--win-top) - var(--win-gap) + var(--win-r))
+          of var(--win-r) ccw,
+        vline to calc(var(--win-top) + var(--win-h) + var(--win-gap) - var(--win-r)),
+        arc to calc(var(--win-arm) + var(--win-r))
+          calc(var(--win-top) + var(--win-h) + var(--win-gap)) of var(--win-r) ccw,
+        hline to calc(100% - var(--win-r)),
+        arc to 100% calc(var(--win-top) + var(--win-h) + var(--win-gap) + var(--win-r))
+          of var(--win-r) cw,
+        vline to 100%,
+        hline to 0,
+        close
+      );
+    }
+  }
+}
+
+/* ---- wide: the notch is the top-right corner and the card is an L */
+@media (min-width: 1024px) {
+  .hero-frame {
+    /* Capped by the card's other arm: the navbar needs about 534px of the top
+       edge, and whatever is left of it is what the window can have. */
+    --win-w: 47cqw;
+    --win-ratio: 1.5;
+    --win-r: 20px;
+    --win-scale: 0.46;
+  }
+
+  .hero-frame__window {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: auto;
+    width: var(--win-w);
+    height: var(--win-h);
+  }
+
+  .hero-frame__card {
+    clip-path: polygon(
+      0 0,
+      calc(100% - var(--win-w) - var(--win-gap)) 0,
+      calc(100% - var(--win-w) - var(--win-gap)) calc(var(--win-h) + var(--win-gap)),
+      100% calc(var(--win-h) + var(--win-gap)),
+      100% 100%,
+      0 100%
+    );
+  }
+
+  @supports (clip-path: shape(from 0 0, line to 10px 10px)) {
+    .hero-frame__card {
+      clip-path: shape(
+        from 0 0,
+        hline to calc(100% - var(--win-w) - var(--win-gap) - var(--win-r)),
+        arc to calc(100% - var(--win-w) - var(--win-gap)) var(--win-r) of var(--win-r) cw,
+        vline to calc(var(--win-h) + var(--win-gap) - var(--win-r)),
+        arc to calc(100% - var(--win-w) - var(--win-gap) + var(--win-r))
+          calc(var(--win-h) + var(--win-gap)) of var(--win-r) ccw,
+        hline to calc(100% - var(--win-r)),
+        arc to 100% calc(var(--win-h) + var(--win-gap) + var(--win-r)) of var(--win-r) cw,
+        vline to 100%,
+        hline to 0,
+        close
+      );
+    }
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero-frame {
+    --win-w: 58cqw;
+    --win-scale: 0.54;
+  }
+}
+
+@media (min-width: 1536px) {
+  .hero-frame {
+    --win-w: 60cqw;
+    /* Larger, not smaller: the window is bigger here, so a bigger fraction of
+       it still shows the app at about the size it really opens at. */
+    --win-scale: 0.64;
+  }
+}
+
+/* --- Sections rise once, the first time they are scrolled to --- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ------------------------------------------------------------------ faces
+   A copy of the app's own face styles, so a bot on the site is drawn by the
+   same rules as a bot in the roster. Four traits and a mark arrive as data
+   attributes on identical markup; --u is the face's width and every part is a
+   fraction of it, so one set of numbers works at every size. */
+
+.face {
+  --u: 34px;
+  --ink: rgba(0, 0, 0, 0.72);
+  position: relative;
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+  width: var(--u);
+  height: var(--u);
+  transform-origin: 50% 85%;
+}
+
+/* ---- the body
+
+   Not a square with its corners rounded off any more. The outline is generated
+   — see lib/blob.ts — so a cat has ears and a teardrop has a point, and it is
+   drawn behind the features rather than around them: the shape changed, the
+   expression did not. Allowed out of its box, because ears are drawn above the
+   top edge on purpose. */
+
+.face__body {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  stroke: none;
+}
+
+/* ---- the parts every face has, whether or not its traits show them */
+
+.face__eyes,
+.face__brows {
+  position: absolute;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  gap: calc(var(--u) * 0.16);
+  width: 100%;
+}
+
+/* Placed against the body that was drawn, not the box it was drawn in. A
+   teardrop's face sits lower than a pebble's, and a pair of ears is above the
+   eyes rather than level with them - `--eye-y` carries that from the
+   generator. `--gaze` shifts them together, which is the whole of what makes
+   one bot look attentive and another dreamy. */
+.face__eyes {
+  top: var(--eye-y, 42%);
+  transform: translateX(var(--gaze, 0));
+}
+
+.face__brows {
+  top: calc(var(--eye-y, 42%) - 11%);
+  transform: translateX(var(--gaze, 0));
+}
+
+.face__eyes i,
+.face__brows i {
+  display: block;
+  background: var(--ink);
+}
+
+/* ---- the resting face
+
+   Two dots and nothing else. A blob carries its identity in its outline, and
+   every mark added to the front of one takes attention away from the thing
+   actually doing the work. The dots are on the spec: diameter 0.15 of the
+   body's width, centres 0.26 apart, both measured from the body that was
+   drawn. The variants a bot may have chosen are gone, because at rest they
+   were all the same eye wearing different amounts of noise. */
+
+.face .face__eyes {
+  gap: calc(var(--eye-gap, 13%) * 2 - var(--u) * 0.15);
+}
+
+.face .face__eyes i {
+  width: calc(var(--u) * 0.15);
+  height: calc(var(--u) * 0.15);
+  border-radius: 50%;
+}
+
+/* ---- traits: brows */
+
+.face[data-brow="none"] .face__brows {
+  display: none;
+}
+
+.face__brows i {
+  width: calc(var(--u) * 0.2);
+  height: calc(var(--u) * 0.045);
+  /* Subordinate to the eyes on purpose: a brow as dark as an eye is read as
+     an eye, which is how these ended up looking like they had four. */
+  background: color-mix(in srgb, var(--ink) 78%, transparent);
+  border-radius: calc(var(--u) * 0.03);
+}
+
+.face[data-brow="angled"] .face__brows i:first-child {
+  transform: rotate(12deg);
+}
+
+.face[data-brow="angled"] .face__brows i:last-child {
+  transform: rotate(-12deg);
+}
+
+.face[data-brow="raised"] .face__brows {
+  top: 25%;
+}
+
+.face[data-brow="raised"] .face__brows i:first-child {
+  transform: translateY(calc(var(--u) * 0.04));
+}
+
+.face[data-brow="thick"] .face__brows i {
+  height: calc(var(--u) * 0.085);
+  background: var(--ink);
+}
+
+/* One up, one level: a face caught mid-question. */
+.face[data-brow="quirk"] .face__brows i:first-child {
+  transform: translateY(calc(var(--u) * -0.05)) rotate(-8deg);
+}
+
+/* ---- traits: the mark
+   Not part of a face - an antenna, a tuft, a pair of cheeks. This is the trait
+   that makes a bot describable to somebody else in three words. */
+
+.face__mark {
+  --hat: #b07d4a;
+  --hat-dark: #7d5731;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.face[data-mark="none"] .face__mark {
+  display: none;
+}
+
+.face[data-mark="antenna"] .face__mark::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--u) * -0.2);
+  left: 50%;
+  width: calc(var(--u) * 0.045);
+  height: calc(var(--u) * 0.22);
+  background: var(--skin);
+  border-radius: calc(var(--u) * 0.03);
+  transform: translateX(-50%);
+}
+
+.face[data-mark="antenna"] .face__mark::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--u) * -0.28);
+  left: 50%;
+  width: calc(var(--u) * 0.14);
+  height: calc(var(--u) * 0.14);
+  background: var(--skin);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.face[data-mark="tuft"] .face__mark::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--u) * -0.13);
+  left: 46%;
+  width: calc(var(--u) * 0.2);
+  height: calc(var(--u) * 0.2);
+  background: var(--skin);
+  border-radius: 60% 10% 60% 10%;
+  transform: rotate(-14deg);
+}
+
+.face[data-mark="cheeks"] .face__mark::before,
+.face[data-mark="cheeks"] .face__mark::after {
+  content: "";
+  position: absolute;
+  top: 56%;
+  width: calc(var(--u) * 0.15);
+  height: calc(var(--u) * 0.09);
+  background: color-mix(in srgb, var(--ink) 22%, transparent);
+  border-radius: 50%;
+}
+
+.face[data-mark="cheeks"] .face__mark::before {
+  left: 8%;
+}
+
+.face[data-mark="cheeks"] .face__mark::after {
+  right: 8%;
+}
+
+/* A band across the brow, like something worn rather than something grown. */
+.face[data-mark="band"] .face__mark::before {
+  content: "";
+  position: absolute;
+  top: 12%;
+  left: -2%;
+  width: 104%;
+  height: calc(var(--u) * 0.1);
+  background: color-mix(in srgb, var(--ink) 55%, transparent);
+}
+
+.face[data-mark="bolt"] .face__mark::before {
+  content: "";
+  position: absolute;
+  top: 14%;
+  right: 12%;
+  width: calc(var(--u) * 0.1);
+  height: calc(var(--u) * 0.2);
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+  clip-path: polygon(60% 0, 0 55%, 42% 55%, 30% 100%, 100% 40%, 55% 40%);
+}
+
+/* ---- headwear
+   Worn things, drawn from the same two pseudo-elements as everything else:
+   a crown and a brim, a cap and its peak, two lobes of a bow, a ring. They sit
+   above the head and are allowed to overlap it, which is what makes a hat read
+   as resting on something rather than floating. */
+
+.face[data-mark="cowboy"] .face__mark::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--u) * -0.3);
+  left: 50%;
+  width: calc(var(--u) * 0.46);
+  height: calc(var(--u) * 0.27);
+  background: var(--hat);
+  border-radius: calc(var(--u) * 0.2) calc(var(--u) * 0.2) calc(var(--u) * 0.05)
+    calc(var(--u) * 0.05);
+  transform: translateX(-50%);
+}
+
+/* The brim, wider than the head and drawn after the crown so it sits in front
+   of it - which is the whole reason a hat looks worn. */
+.face[data-mark="cowboy"] .face__mark::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--u) * -0.1);
+  left: 50%;
+  width: calc(var(--u) * 1.02);
+  height: calc(var(--u) * 0.15);
+  background: var(--hat);
+  border-radius: 50%;
+  box-shadow: inset 0 calc(var(--u) * -0.03) 0 var(--hat-dark);
+  transform: translateX(-50%);
+}
+
+.face[data-mark="cap"] .face__mark::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--u) * -0.22);
+  left: 50%;
+  width: calc(var(--u) * 0.56);
+  height: calc(var(--u) * 0.28);
+  background: var(--hat);
+  border-radius: calc(var(--u) * 0.28) calc(var(--u) * 0.28) 0 0;
+  transform: translateX(-50%);
+}
+
+.face[data-mark="cap"] .face__mark::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--u) * -0.02);
+  left: 52%;
+  width: calc(var(--u) * 0.4);
+  height: calc(var(--u) * 0.1);
+  background: var(--hat-dark);
+  border-radius: 0 50% 50% 0;
+  transform: rotate(-5deg);
+}
+
+.face[data-mark="bow"] .face__mark::before,
+.face[data-mark="bow"] .face__mark::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--u) * -0.12);
+  width: calc(var(--u) * 0.2);
+  height: calc(var(--u) * 0.17);
+  background: color-mix(in srgb, var(--skin) 40%, #f2f2f2);
+}
+
+.face[data-mark="bow"] .face__mark::before {
+  left: 26%;
+  border-radius: 60% 20% 60% 20%;
+}
+
+.face[data-mark="bow"] .face__mark::after {
+  right: 26%;
+  border-radius: 20% 60% 20% 60%;
+}
+
+.face[data-mark="halo"] .face__mark::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--u) * -0.24);
+  left: 50%;
+  width: calc(var(--u) * 0.52);
+  height: calc(var(--u) * 0.16);
+  background: transparent;
+  border: calc(var(--u) * 0.05) solid #ffd166;
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+/* Every bot blinks; it is the difference between a mark and a creature. Each
+   on its own beat, set per bot, so a row does not blink in unison. */
+@keyframes eye-blink {
+  0%,
+  86%,
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+  89%,
+  92% {
+    clip-path: inset(96% 0 0 0);
+  }
+}
+
+.face__eyes i {
+  animation: eye-blink var(--beat, 2.6s) linear infinite;
+}
+
+.face__eyes i:last-child {
+  animation-delay: 0.06s;
+}
+
+/* A portrait rather than a creature. */
+.face--still .face__eyes i {
+  animation: none;
+}
+
+/* ---- moods: what a bot is doing this second
+   Kept apart from the traits above on purpose - a trait is what this bot looks
+   like at rest, a mood is what it is doing, and a new mood must never require a
+   new element. Everything below is keyed on [data-mood]. */
+
+/* The aura: what a mood puts above a bot's head. One element, empty until a
+   mood fills it. */
+.face__aura {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.face__aura::before,
+.face__aura::after {
+  content: "";
+  position: absolute;
+  opacity: 0;
+  border-radius: 50%;
+  /* Tinted from the bot rather than plain white, so the cloud belongs to the
+     creature having the thought. */
+  background: color-mix(in srgb, var(--skin) 26%, #f4f4f6);
+}
+
+/* A cloud made of one element and two box-shadows, because three overlapping
+   circles is what a thought bubble is and three elements is two too many. */
+.face[data-mood="think"] .face__aura::before {
+  top: calc(var(--u) * -0.3);
+  right: calc(var(--u) * -0.14);
+  width: calc(var(--u) * 0.36);
+  height: calc(var(--u) * 0.24);
+  box-shadow:
+    calc(var(--u) * -0.14) calc(var(--u) * 0.04) 0 calc(var(--u) * -0.04)
+      color-mix(in srgb, var(--skin) 26%, #f4f4f6),
+    calc(var(--u) * 0.1) calc(var(--u) * 0.05) 0 calc(var(--u) * -0.06)
+      color-mix(in srgb, var(--skin) 26%, #f4f4f6);
+  opacity: 1;
+  animation: think-cloud 2.4s ease-in-out infinite;
+}
+
+/* The little one trailing behind it, which is what makes a cloud read as a
+   thought rather than as weather. */
+.face[data-mood="think"] .face__aura::after {
+  top: calc(var(--u) * -0.09);
+  right: calc(var(--u) * 0.04);
+  width: calc(var(--u) * 0.1);
+  height: calc(var(--u) * 0.1);
+  opacity: 1;
+  animation: think-tail 2.4s ease-in-out infinite;
+}
+
+@keyframes think-cloud {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(calc(var(--u) * -0.05)) scale(1.06);
+  }
+}
+
+@keyframes think-tail {
+  0%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.55;
+  }
+  45% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Thinking: the eyes drift up and the brows lift, which reads as looking for
+   something rather than at you. */
+@keyframes mood-think {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(calc(var(--u) * -0.05));
+  }
+}
+
+.face[data-mood="think"] .face__eyes,
+.face[data-mood="think"] .face__brows {
+  animation: mood-think 1.9s ease-in-out infinite;
+}
+
+/* Working: a small busy nod. */
+@keyframes mood-work {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  25% {
+    transform: translateY(calc(var(--u) * 0.03)) rotate(-3deg);
+  }
+  75% {
+    transform: translateY(calc(var(--u) * -0.02)) rotate(3deg);
+  }
+}
+
+.face[data-mood="work"] {
+  animation: mood-work 0.9s ease-in-out infinite;
+}
+
+/* Writing: the eyes sweep a line and flick back, which is the part that reads
+   as a line ending. */
+@keyframes eyes-track {
+  0% {
+    transform: translateX(calc(var(--u) * -0.035));
+  }
+  70% {
+    transform: translateX(calc(var(--u) * 0.045));
+  }
+  80%,
+  100% {
+    transform: translateX(calc(var(--u) * -0.035));
+  }
+}
+
+@keyframes mood-write {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    transform: translateY(calc(var(--u) * 0.02)) rotate(-1.5deg);
+  }
+}
+
+.face[data-mood="write"] .face__eyes {
+  animation: eyes-track 1.5s ease-in-out infinite;
+}
+
+.face[data-mood="write"] {
+  animation: mood-write 1.5s ease-in-out infinite;
+}
+
+/* Done: a jump, with the mouth pulled into a grin on the way up. */
+@keyframes mood-happy {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(calc(var(--u) * -0.22)) scale(1.04, 0.96);
+  }
+  45% {
+    transform: translateY(0) scale(1.06, 0.94);
+  }
+  65% {
+    transform: translateY(calc(var(--u) * -0.08));
+  }
+}
+
+.face[data-mood="happy"] {
+  animation: mood-happy 0.9s cubic-bezier(0.3, 0.9, 0.4, 1.3) infinite;
+}
+
+/* Talking, on a call: the mouth opens and shuts, and the head keeps a little
+   life in it while it is going. */
+@keyframes mood-talk {
+  0%,
+  49% {
+    height: calc(var(--u) * 0.15);
+    transform: translateY(0);
+  }
+  50%,
+  100% {
+    height: calc(var(--u) * 0.05);
+    transform: translateY(calc(var(--u) * 0.05));
+  }
+}
+
+@keyframes mood-talking {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+  40% {
+    transform: translateY(calc(var(--u) * -0.02)) rotate(-1.5deg);
+  }
+}
+
+.face[data-mood="talk"] {
+  animation: mood-talking 1.9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .face,
+  .face__eyes,
+  .face__brows,
+  .face__aura::before,
+  .face__aura::after {
+    animation: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .face__eyes i {
+    animation: none;
+  }
 }
