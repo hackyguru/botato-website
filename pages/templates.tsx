@@ -94,9 +94,14 @@ export default function Templates() {
             <p className="mx-auto mt-10 max-w-2xl text-[13px] leading-[1.6] text-fg-3">
               Worked out a good one? Templates are a file rather than a database, so a new
               one arrives the same way any other contribution does: add it to{" "}
-              <code className="rounded-chip bg-fill-2 px-1.5 py-0.5 text-[12px] text-fg-2">
+              <a
+                className="text-link transition-opacity hover:opacity-70"
+                href="https://github.com/hackyguru/botcage-website/blob/main/data/templates.ts"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 data/templates.ts
-              </code>{" "}
+              </a>{" "}
               and open a pull request. Every bot here also has a{" "}
               <strong className="font-medium text-fg-2">Copy JSON</strong> button — the same
               thing a link carries, if you would rather read it before you run it.
