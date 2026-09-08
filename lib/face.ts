@@ -2,8 +2,8 @@
  * What a bot looks like, derived the way the app derives it.
  *
  * In the app a face comes from the bot's id, which is a random string made a
- * millisecond before it. Here there are no ids — a template is a name and a
- * job — so the name is the seed, and the same name draws the same creature in
+ * millisecond before it. Here there are no ids - a template is a name and a
+ * job - so the name is the seed, and the same name draws the same creature in
  * both places. That matters more here than anywhere: the point of a gallery
  * is that what you are looking at is what you will get.
  */
@@ -17,7 +17,7 @@ const BROWS = ["none", "flat", "angled", "raised", "thick", "quirk"];
 /** What a name asks to look like.
  *
  *  A bot called "Artist" should look like one. The head is all this system
- *  draws — no hands, so no brush to hold — so what an artist can wear is the
+ *  draws - no hands, so no brush to hold - so what an artist can wear is the
  *  beret. Kept identical to the app's table: a template that wears a headset
  *  on this page and nothing in the roster is a template that lied. */
 const LOOKS: { mark: string; words: string[] }[] = [

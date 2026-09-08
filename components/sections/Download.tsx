@@ -3,9 +3,13 @@ import Reveal from "@/components/Reveal";
 import { Heading, Panel, PrimaryButton, SectionIntro } from "@/components/Section";
 import HeroWindow from "@/components/HeroWindow";
 import { PhonePreview } from "@/components/mocks";
-import { Apple, Arrow, Github, Linux, Phone } from "@/components/icons";
+import Link from "next/link";
+import { Apple, Arrow, Linux, People, Phone } from "@/components/icons";
 
-const RELEASES = "https://github.com/hackyguru/botcage/releases/latest";
+// The list rather than `releases/latest`: botcage is alpha and every release is
+// published as a pre-release, which is exactly what `latest` excludes — so that
+// URL is a 404 rather than a download.
+const RELEASES = "https://github.com/hackyguru/botcage/releases";
 const REPO = "https://github.com/hackyguru/botcage";
 
 /** A pill for one platform's build. Two of them sit under the desktop card,
@@ -75,7 +79,7 @@ export function Download() {
               <br className="hidden sm:block" /> you are.
             </>
           }
-          lede="The laptop does the work. The phone is how you reach it when you are not sitting at it, and neither needs an account."
+          lede="The laptop does the work. The phone is how you reach it when you are not sitting at it and neither needs an account."
         />
 
         <div className="mt-12 grid gap-4 sm:mt-16 sm:gap-5 lg:grid-cols-2">
@@ -120,9 +124,10 @@ export function Download() {
 
         <Reveal delay={160}>
           <p className="mt-8 text-center text-[13px] leading-[1.6] text-fg-3 sm:mt-10">
-            Version 0.4.0. Bots answer through Claude Code by default, and can be
-            pointed at another model whenever you like. Everything else botcage sets
-            up for you the first time you need it.
+            Alpha, and every release is a pre-release: provided as is, with no
+            warranty, and expect it to break. Bots answer through Claude Code by
+            default and can be pointed at another model whenever you like. Everything
+            else botcage sets up for you the first time you need it.
           </p>
         </Reveal>
       </div>
@@ -167,16 +172,14 @@ export function CTA() {
               <Arrow className="absolute h-[18px] w-[18px] -translate-x-[165%] transition-transform duration-[420ms] ease-[cubic-bezier(.65,0,.35,1)] group-hover:translate-x-0" />
             </span>
           </PrimaryButton>
-          <a
-            href={REPO}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/templates"
             className="inline-flex items-center justify-center gap-2.5 text-base font-semibold text-fg-2 transition-colors hover:text-fg sm:justify-start"
           >
-            <Github className="h-5 w-5" />
-            Read the source
+            <People className="h-5 w-5" />
+            Explore bots from the community
             <Arrow className="h-[17px] w-[17px]" />
-          </a>
+          </Link>
         </div>
       </Reveal>
     </Panel>

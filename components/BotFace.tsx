@@ -1,8 +1,8 @@
 /* A bot's face, exactly as the app draws one.
  *
  *  Not a square with a rounded corner any more. The body is a generated
- *  outline — `r(θ) = 1 + Σ harmonics + Σ lobes`, sampled and closed with a
- *  spline — so a cat has ears and a teardrop has a point, and the eye line
+ *  outline - `r(θ) = 1 + Σ harmonics + Σ lobes`, sampled and closed with a
+ *  spline - so a cat has ears and a teardrop has a point, and the eye line
  *  comes from the body that came out rather than from the middle of the box.
  *
  *  The CSS in globals.css is a copy of the app's, and blob.ts is a copy of the
@@ -20,10 +20,13 @@ type Props = {
   size?: number;
   /** A portrait rather than a creature: no blinking. */
   still?: boolean;
-  /** What it is doing this second — think, work, write, happy, talk. Kept
+  /** What it is doing this second - think, work, write, happy, talk. Kept
    *  apart from the traits: a trait is what a bot looks like at rest. */
   mood?: string;
   className?: string;
+  /** Anything worn or held. Rendered inside the face rather than over it, so
+   *  a hat stays on the head through every mood that moves the head. */
+  children?: React.ReactNode;
 } & Partial<Face>;
 
 export default function BotFace({
@@ -33,6 +36,7 @@ export default function BotFace({
   still = false,
   mood,
   className = "",
+  children,
   ...overrides
 }: Props) {
   const face = { ...faceFromName(name), ...prune(overrides) };
@@ -79,6 +83,7 @@ export default function BotFace({
       {/* Empty at rest and owned by no trait: whatever a mood wants to put
           above a bot's head lives here. */}
       <span className="face__aura" />
+      {children}
     </span>
   );
 }

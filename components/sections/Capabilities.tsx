@@ -1,22 +1,33 @@
 import Reveal from "@/components/Reveal";
 import { Panel, SectionIntro } from "@/components/Section";
-import { CallMock, ComputerMock, FacesMock, RoutinesMock } from "@/components/mocks";
+import {
+  CallMock,
+  ComputerMock,
+  FacesMock,
+  HandoffMock,
+  RoutinesMock,
+} from "@/components/mocks";
 
 function Card({
   title,
   body,
   visual,
   delay,
+  className = "",
+  tall = false,
 }: {
   title: string;
   body: React.ReactNode;
   visual: React.ReactNode;
   delay: number;
+  className?: string;
+  /** A card the width of the grid gets room for a row rather than a column. */
+  tall?: boolean;
 }) {
   return (
     <Reveal
       delay={delay}
-      className="flex flex-col gap-6 rounded-surface bg-fill-1 p-5 border border-line sm:p-7"
+      className={`flex flex-col gap-6 rounded-surface bg-fill-1 p-5 border border-line sm:p-7 ${className}`}
     >
       <div>
         <h3 className="text-xl font-medium tracking-[-0.02em] text-fg sm:text-2xl">
@@ -26,7 +37,9 @@ function Card({
       </div>
       {/* One height for all four, so the cards line up down the grid whatever
           is inside them. Each mock fills it rather than setting its own. */}
-      <div className="mt-auto h-[260px]">{visual}</div>
+      <div className={`mt-auto ${tall ? "min-h-[400px] sm:min-h-[360px]" : "h-[260px]"}`}>
+        {visual}
+      </div>
     </Reveal>
   );
 }
@@ -44,7 +57,7 @@ export default function Capabilities() {
               <br className="hidden sm:block" /> chat window.
             </>
           }
-          lede="A computer of its own, a voice, a schedule, and a face that shows you what it is doing."
+          lede="A computer of its own, a voice, a schedule and a face that shows you what it is doing."
         />
 
         <div className="mt-12 grid gap-4 sm:mt-16 sm:gap-5 lg:grid-cols-2">
@@ -62,15 +75,23 @@ export default function Capabilities() {
           />
           <Card
             delay={0}
-            title="Routines, and stand-ups"
+            title="Routines and stand-ups"
             body="Work a bot does on a schedule, reported back into its chat or a channel. A routine can be a stand-up, where every bot in the room takes a turn."
             visual={<RoutinesMock />}
           />
           <Card
             delay={80}
             title="Every bot has a face"
-            body="Every outline is generated from its name rather than picked off a list, so no two look alike and the same name always comes out the same creature. They blink, think with a cloud overhead, and slump when a turn fails."
+            body="Every outline is generated from its name rather than picked off a list, so no two look alike and the same name always comes out the same creature. They blink, think with a cloud overhead and slump when a turn fails."
             visual={<FacesMock />}
+          />
+          <Card
+            delay={0}
+            className="lg:col-span-2"
+            tall
+            title="They hand work to each other"
+            body="Bots share rooms, so they read what the others said and answer each other rather than only you. One that needs something asks the bot that has it and the work carries on without you in the middle of it."
+            visual={<HandoffMock />}
           />
         </div>
       </div>

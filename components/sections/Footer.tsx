@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Github } from "@/components/icons";
 
 const REPO = "https://github.com/hackyguru/botcage";
@@ -85,6 +87,12 @@ export default function Footer() {
         <div className="mt-8 flex flex-col gap-2 border-t border-line pt-6 text-[12.5px] text-fg-3 sm:flex-row sm:items-center sm:justify-between">
           <p>Alpha, version 0.4.0.</p>
           <p>Nothing runs on anyone else&rsquo;s computer.</p>
+          <Link
+            href="/terms"
+            className="transition-colors hover:text-fg-2"
+          >
+            Terms of use
+          </Link>
         </div>
       </div>
     </footer>

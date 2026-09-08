@@ -1,7 +1,7 @@
 /* The two lights every face is painted with.
  *
  *  A gradient referenced by `url(#face-hi)` has to exist somewhere in the
- *  document, and this is that somewhere — mounted once for the whole site
+ *  document, and this is that somewhere - mounted once for the whole site
  *  rather than repeated inside every face, which would be one definition per
  *  bot on a page that means to show a great many of them.
  *

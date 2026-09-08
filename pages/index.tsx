@@ -18,19 +18,24 @@ const instrumentSerif = Instrument_Serif({
 });
 
 const DESCRIPTION =
-  "Bots that run on your own laptop, with their own memory and a computer of their own. They keep working with the lid shut, and your phone reaches them from anywhere.";
+  "Bots that run on your own laptop, with their own memory and a computer of their own. They keep working with the lid shut and your phone reaches them from anywhere.";
 
 export default function Home() {
   return (
     <div className={`${inter.variable} ${instrumentSerif.variable} font-sans`}>
       <Head>
-        <title>botcage - bots that live on your own machine</title>
+        <title>botcage</title>
         <meta name="description" content={DESCRIPTION} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta property="og:title" content="botcage" />
         <meta property="og:description" content={DESCRIPTION} />
         <meta property="og:type" content="website" />
         <meta name="theme-color" content="#000000" />
+        {/* The app's own icon, straight out of src-tauri/icons, so the tab and
+            the dock show the same thing. */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" href="/botcage.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </Head>
 
       <Hero />

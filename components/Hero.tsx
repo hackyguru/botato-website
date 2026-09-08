@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 import BrandMark from "@/components/BrandMark";
+import { WorksWith } from "@/components/engines";
 import HeroWindow from "@/components/HeroWindow";
 
 // Each blob drifts along the sum of two sine waves per axis, so paths feel
@@ -183,9 +185,7 @@ function GithubIcon({ className }: { className?: string }) {
   );
 }
 
-/* Where the badge points. Releases is the nearest real thing there is until
-   the post itself exists - swap this for its URL when it does. */
-const LAUNCH_POST = "https://github.com/hackyguru/botcage/releases/latest";
+const LAUNCH_POST = "/launch";
 
 const NAV_LINKS = [
   { label: "Features", href: "#features" },
@@ -215,7 +215,7 @@ export default function Hero() {
               style={{ "--hero-delay": "160ms" } as React.CSSProperties}
             >
               <a href="#top" aria-label="botcage" className="flex shrink-0 items-center">
-                <BrandMark className="h-10 w-10" />
+                <BrandMark className="h-10 w-10" color="#131315" eye="rgba(255,255,255,0.92)" />
               </a>
               <nav
                 className="hidden items-center gap-5 sm:flex"
@@ -252,10 +252,8 @@ export default function Hero() {
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               {/* Left: badge + headline */}
               <div className="shrink-0 text-white lg:max-w-lg xl:max-w-2xl">
-                <a
+                <Link
                   href={LAUNCH_POST}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="hero-rise group mb-4 inline-flex max-w-full items-center gap-2.5 rounded-full border border-white/20 bg-black/25 py-1.5 pl-2 pr-1.5 text-[12px] backdrop-blur-md transition-colors hover:border-white/30 hover:bg-black/35 sm:gap-3 sm:text-[13px]"
                   style={{ "--hero-delay": "300ms" } as React.CSSProperties}
                 >
@@ -274,7 +272,7 @@ export default function Hero() {
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-colors group-hover:bg-white/20">
                     <ArrowUpRightIcon className="h-[13px] w-[13px]" />
                   </span>
-                </a>
+                </Link>
                 <h1 className="text-4xl font-medium leading-[0.98] tracking-[-0.045em] drop-shadow-lg sm:text-6xl lg:text-[3.5rem] xl:text-7xl">
                   <span className="slot-line">
                     <span
@@ -301,6 +299,7 @@ export default function Hero() {
                 className="hero-rise w-full shrink-0 text-white lg:w-[min(560px,45%)] lg:pb-1"
                 style={{ "--hero-delay": "560ms" } as React.CSSProperties}
               >
+                <WorksWith className="mb-4" />
                 <p className="max-w-[560px] text-lg font-semibold leading-[1.4] drop-shadow-md">
                   <span className="lg:block">
                     Your bots run on your laptop, each with a computer of its own.

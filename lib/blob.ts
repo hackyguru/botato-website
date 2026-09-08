@@ -1,18 +1,18 @@
 /*
- * The bodies bots are drawn in — a copy of the app's src/blob.ts.
+ * The bodies bots are drawn in - a copy of the app's src/blob.ts.
  *
  * Copied rather than imported: the site deploys from website/ alone, so a
  * relative import out of it would build here and fail there. The two must
  * stay in step, and the way to check is that a name draws the same creature
- * in both — which is the whole reason a face on this page is worth showing.
+ * in both - which is the whole reason a face on this page is worth showing.
  */
 
 
 /** A body: what its radius does, and where it is looking. */
 export interface Silhouette {
-  /** `[k, amplitude, phase]` — a cosine round the whole outline. */
+  /** `[k, amplitude, phase]` - a cosine round the whole outline. */
   harmonics?: [number, number, number][];
-  /** `[angle, amplitude, width]` — one smooth bump. Negative takes a bite. */
+  /** `[angle, amplitude, width]` - one smooth bump. Negative takes a bite. */
   lobes?: [number, number, number][];
   /** Both pupils together, as a fraction of body width. The only licence a
    *  character has, and the whole of what makes one look attentive and another
@@ -24,7 +24,7 @@ const TAU = Math.PI * 2;
 const TOP = -Math.PI / 2;
 
 /** The family. Named for what you would call them out loud, because a shape
- *  you can name is a shape you can remember — which is the entire job. */
+ *  you can name is a shape you can remember - which is the entire job. */
 export const SILHOUETTES: Record<string, Silhouette> = {
   pebble: { harmonics: [[2, 0.06, 0.4], [3, 0.04, 1.2]] },
   drop: { lobes: [[TOP, 0.62, 0.5]] },
@@ -44,7 +44,7 @@ export const BODIES = Object.keys(SILHOUETTES);
 
 /** What a body saved before this looked like, in the nearest thing that exists
  *  now. Six of the old heads were one square with a different corner radius,
- *  so there is not much to preserve — but a bot's face is not something an
+ *  so there is not much to preserve - but a bot's face is not something an
  *  update should change more than it has to. */
 const WAS: Record<string, string> = {
   circle: "pebble",
@@ -80,7 +80,7 @@ function radius(body: Silhouette, t: number): number {
 export interface Drawn {
   /** The path, in a 100×100 box. */
   d: string;
-  /** The eye line, as a percentage of that box — the optical centre of the
+  /** The eye line, as a percentage of that box - the optical centre of the
    *  body rather than the middle of the box, which for a teardrop or a pair of
    *  ears are a long way apart. */
   eyeY: number;
@@ -161,7 +161,7 @@ export const gazeOf = (name: string): number => (SILHOUETTES[bodyOf(name)]?.gaze
 /** The same creature, drawn on its own.
  *
  *  For the app's own mark, which is a character in this family rather than a
- *  logo beside it — the same outline, the same two dots, the same light. It
+ *  logo beside it - the same outline, the same two dots, the same light. It
  *  carries its features as SVG rather than as the spans a bot's face uses,
  *  because it has no moods to animate and a logo that could blink would be a
  *  logo that could blink at the wrong moment. */

@@ -4,7 +4,7 @@ import { body } from "@/lib/blob";
  *
  *  A character in the same family as the bots rather than a logo standing
  *  beside them: the same generated outline, the same two dots, the same light.
- *  Pebble in the tan the app icon is drawn in — what is in the Dock, so the
+ *  Pebble in the tan the app icon is drawn in - what is in the Dock, so the
  *  thing on the page and the thing on the machine are one creature.
  *
  *  It carries its eyes as circles rather than as the spans a bot's face uses,
@@ -13,17 +13,21 @@ import { body } from "@/lib/blob";
 
 const SHAPE = "pebble";
 const SKIN = "#c8a06a";
+const PUPIL = "rgba(0,0,0,0.78)";
 
 export default function BrandMark({
   className = "",
   color = SKIN,
+  eye: pupil = PUPIL,
 }: {
   className?: string;
   color?: string;
+  /** The dots. Given separately so a mark on a dark body can still see. */
+  eye?: string;
 }) {
   const drawn = body(SHAPE);
   const eye = (x: number) => (
-    <circle cx={x.toFixed(1)} cy={drawn.eyeY.toFixed(1)} r={drawn.eyeR.toFixed(1)} fill="rgba(0,0,0,0.78)" />
+    <circle cx={x.toFixed(1)} cy={drawn.eyeY.toFixed(1)} r={drawn.eyeR.toFixed(1)} fill={pupil} />
   );
   return (
     <svg className={className} viewBox="0 0 100 100" aria-hidden="true">

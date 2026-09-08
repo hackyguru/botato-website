@@ -104,3 +104,30 @@ export function Lock({ className }: IconProps) {
     </Stroke>
   );
 }
+
+export function People({ className }: IconProps) {
+  return (
+    <Stroke className={className}>
+      <circle cx="9" cy="8" r="3.4" />
+      <path d="M2.8 20a6.4 6.4 0 0 1 12.4 0" />
+      <path d="M16 5.4a3.4 3.4 0 0 1 0 6.5M17.5 14.4a6.4 6.4 0 0 1 3.7 5.6" />
+    </Stroke>
+  );
+}
+
+export function Search({ className }: IconProps) {
+  return (
+    <Stroke className={className}>
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+    </Stroke>
+  );
+}
+
+export function Cross({ className }: IconProps) {
+  return (
+    <Stroke className={className} width={2}>
+      <path d="M18 6 6 18M6 6l12 12" />
+    </Stroke>
+  );
+}

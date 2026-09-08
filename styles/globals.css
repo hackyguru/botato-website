@@ -404,7 +404,7 @@ body {
 /* ---- the body
 
    Not a square with its corners rounded off any more. The outline is generated
-   — see lib/blob.ts — so a cat has ears and a teardrop has a point, and it is
+   - see lib/blob.ts - so a cat has ears and a teardrop has a point, and it is
    drawn behind the features rather than around them: the shape changed, the
    expression did not. Allowed out of its box, because ears are drawn above the
    top edge on purpose. */
@@ -927,4 +927,52 @@ body {
   .face__eyes i {
     animation: none;
   }
+}
+
+/* Particles crossing the row where four bots hand work to each other.
+   A dot enters at the left, drifts the width of the row and leaves, so the
+   stream reads as work moving along the line rather than as one static wire.
+   `left` rather than a transform because the distance is the row's width,
+   and a percentage transform would be a percentage of the dot. */
+@keyframes bot-drift {
+  0% {
+    left: -3%;
+    opacity: 0;
+  }
+  14% {
+    opacity: var(--lit, 0.5);
+  }
+  86% {
+    opacity: var(--lit, 0.5);
+  }
+  100% {
+    left: 103%;
+    opacity: 0;
+  }
+}
+
+.drift {
+  position: absolute;
+  border-radius: 999px;
+  background: currentColor;
+  animation: bot-drift var(--dur, 6s) linear infinite;
+  animation-delay: var(--at, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drift {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* What a bot wears or carries. Same box as the body, and allowed outside it,
+   because a hat is drawn above the crown and a brush is held past the edge. */
+.face__props {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
 }
