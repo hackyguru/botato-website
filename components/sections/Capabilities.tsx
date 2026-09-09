@@ -27,7 +27,7 @@ function Card({
   return (
     <Reveal
       delay={delay}
-      className={`flex flex-col gap-6 rounded-surface bg-fill-1 p-5 border border-line sm:p-7 ${className}`}
+      className={`flex min-w-0 flex-col gap-6 rounded-surface bg-fill-1 p-5 border border-line sm:p-7 ${className}`}
     >
       <div>
         <h3 className="text-xl font-medium tracking-[-0.02em] text-fg sm:text-2xl">
@@ -35,9 +35,19 @@ function Card({
         </h3>
         <p className="mt-2.5 text-[14px] leading-[1.6] text-fg-2">{body}</p>
       </div>
-      {/* One height for all four, so the cards line up down the grid whatever
-          is inside them. Each mock fills it rather than setting its own. */}
-      <div className={`mt-auto ${tall ? "min-h-[400px] sm:min-h-[360px]" : "h-[260px]"}`}>
+      {/* One height for all four where they sit side by side, so the cards line
+          up down the grid. In a single column that height is only a floor, or a
+          mock taller than 260px loses its last line off the bottom.
+
+          Clipped horizontally because the mocks are drawn at a desk-sized
+          width: left to themselves they set the card's width, and a grid item
+          is min-width:auto, so one of them ends up deciding how wide the whole
+          grid is. */}
+      <div
+        className={`mt-auto min-w-0 overflow-hidden ${
+          tall ? "min-h-[400px] sm:min-h-[360px]" : "min-h-[260px] lg:h-[260px]"
+        }`}
+      >
         {visual}
       </div>
     </Reveal>

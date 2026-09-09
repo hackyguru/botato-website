@@ -117,7 +117,7 @@ export default function Templates() {
                 )}
               </label>
 
-              <div className="mt-3 flex flex-wrap items-center gap-2">
+              <div className="mt-3.5 flex flex-wrap items-center gap-2">
                 <Filter on={tag === null} onClick={() => setTag(null)}>
                   All
                 </Filter>
@@ -198,7 +198,7 @@ function Filter({
       type="button"
       onClick={onClick}
       aria-pressed={on}
-      className={`rounded-pill px-3.5 py-1.5 text-[13px] font-medium transition-colors ${
+      className={`rounded-pill px-3.5 py-2 text-[13px] font-medium transition-colors ${
         on ? "bg-fill-3 text-fg" : "bg-fill-1 text-fg-3 hover:text-fg-2"
       }`}
     >

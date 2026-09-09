@@ -223,12 +223,12 @@ export default function Launch() {
                   a line about what it is for. Everything after that happens on your
                   machine.
                 </p>
-                <div className="flex flex-wrap gap-3 pt-2">
+                <div className="flex flex-col gap-2.5 pt-2 sm:flex-row sm:flex-wrap sm:gap-3">
                   <a
                     href={RELEASES}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-pill bg-blue px-5 py-2.5 text-[15px] font-medium text-white transition-[filter] hover:brightness-[1.08]"
+                    className="rounded-pill bg-blue px-5 py-3 text-center text-[15px] font-medium text-white transition-[filter] hover:brightness-[1.08]"
                   >
                     Download botato
                   </a>
@@ -236,7 +236,7 @@ export default function Launch() {
                     href={REPO}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-pill bg-fill-2 px-5 py-2.5 text-[15px] font-medium text-fg transition-colors hover:bg-fill-3"
+                    className="rounded-pill bg-fill-2 px-5 py-3 text-center text-[15px] font-medium text-fg transition-colors hover:bg-fill-3"
                   >
                     Read the source
                   </a>

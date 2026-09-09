@@ -9,6 +9,7 @@ const COLUMNS = [
     title: "Product",
     links: [
       { label: "What a bot gets", href: "#features" },
+      { label: "Templates", href: "/templates" },
       { label: "Platforms", href: "#platforms" },
     ],
   },
@@ -57,7 +58,7 @@ export default function Footer() {
               <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-fg-3">
                 {column.title}
               </p>
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-3 space-y-0.5">
                 {column.links.map((link) => (
                   <li key={link.label}>
                     <a
@@ -65,7 +66,7 @@ export default function Footer() {
                       {...(link.href.startsWith("http")
                         ? { target: "_blank", rel: "noopener noreferrer" }
                         : {})}
-                      className="text-[13.5px] text-fg-2 transition-colors hover:text-fg"
+                      className="-mx-1 inline-block rounded px-1 py-1.5 text-[13.5px] text-fg-2 transition-colors hover:text-fg"
                     >
                       {link.label}
                     </a>

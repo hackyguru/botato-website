@@ -105,7 +105,7 @@ export default function TemplateCard({ template }: { template: Template }) {
         </pre>
       )}
 
-      <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
+      <div className="mt-auto flex flex-wrap items-center gap-2.5 pt-1">
         <a
           href={linkFor(template)}
           className="rounded-control bg-blue px-4 py-2 text-[13px] font-medium text-white transition-[filter] hover:brightness-[1.08]"
@@ -122,7 +122,7 @@ export default function TemplateCard({ template }: { template: Template }) {
         <button
           type="button"
           onClick={copy}
-          className="rounded-control px-2.5 py-2 text-[13px] font-medium text-fg-3 transition-colors hover:text-fg-2"
+          className="rounded-control px-3.5 py-2 text-[13px] font-medium text-fg-3 transition-colors hover:text-fg-2"
         >
           {copied ? "Copied" : "Copy JSON"}
         </button>

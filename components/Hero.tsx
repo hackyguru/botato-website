@@ -308,7 +308,7 @@ export default function Hero() {
                     Shut the lid and they carry on. Your phone still reaches them.
                   </span>
                 </p>
-                <div className="mt-5 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-6">
+                <div className="mt-6 flex flex-col items-stretch gap-2 sm:mt-5 sm:flex-row sm:items-center sm:gap-6">
                   <a
                     href="#platforms"
                     className="group inline-flex w-full items-center justify-between gap-5 rounded-full bg-white py-2.5 pl-6 pr-2.5 text-base font-semibold text-neutral-900 shadow-lg transition-shadow hover:shadow-xl sm:w-auto"
@@ -323,7 +323,7 @@ export default function Hero() {
                     href="https://github.com/hackyguru/botato"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2.5 text-base font-semibold text-white/85 drop-shadow-md transition-colors hover:text-white sm:justify-start"
+                    className="inline-flex items-center justify-center gap-2.5 rounded-full py-3 text-base font-semibold text-white/85 drop-shadow-md transition-colors hover:text-white sm:justify-start sm:py-0"
                   >
                     <GithubIcon className="h-5 w-5" />
                     GitHub

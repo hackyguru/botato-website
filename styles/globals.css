@@ -220,7 +220,12 @@ body {
      240px, so there it stays near 3:2. */
   --win-ratio: 1.15;
   --win-h: calc(var(--win-w) / var(--win-ratio));
-  --win-top: calc(var(--hero-pad) + var(--nav-h) + var(--win-gap));
+  /* Card left visible below the navbar. Without this the notch starts on the
+     navbar's own bottom edge, and the L has no top arm to speak of. */
+  --nav-gap: 20px;
+  --win-top: calc(
+    var(--hero-pad) + var(--nav-h) + var(--nav-gap) + var(--win-gap)
+  );
   /* A 310px-wide slot showing a whole desktop window. The scale is what makes
      it a miniature of the app rather than a crop of it. */
   --win-scale: 0.44;
@@ -296,10 +301,27 @@ body {
 /* ---- wide: the notch is the top-right corner and the card is an L */
 @media (min-width: 1024px) {
   .hero-frame {
-    /* Capped by the card's other arm: the navbar needs about 534px of the top
-       edge, and whatever is left of it is what the window can have. */
-    --win-w: 47cqw;
+    /* Both arms of the L are floors the window is not allowed to eat into.
+
+       The top arm has to hold the navbar and still show card beside it, or
+       the arm looks like a border drawn round the navbar rather than part of
+       the shape. The navbar runs to about 485px from the card's left edge.
+
+       The bottom arm has to hold the headline and the buttons. That is the
+       one that used to break: the window's height came from the card's width
+       alone, so a wide but short laptop - 1366x768 above all - gave the
+       window 509px of a 720px card and sliced the engine row in half on the
+       notch edge. Both are min() against what is left rather than fixed
+       numbers, so the window keeps its ratio wherever there is room for it. */
+    --arm-min: 565px;
+    --bar-min: 320px;
+    --card-h: calc(100svh - 48px);
+    --win-w: min(47cqw, calc(100cqw - var(--arm-min) - var(--win-gap)));
     --win-ratio: 1.5;
+    --win-h: min(
+      calc(var(--win-w) / var(--win-ratio)),
+      calc(var(--card-h) - var(--bar-min) - var(--win-gap))
+    );
     --win-r: 20px;
     --win-scale: 0.46;
   }
@@ -345,14 +367,14 @@ body {
 
 @media (min-width: 1280px) {
   .hero-frame {
-    --win-w: 58cqw;
+    --win-w: min(58cqw, calc(100cqw - var(--arm-min) - var(--win-gap)));
     --win-scale: 0.54;
   }
 }
 
 @media (min-width: 1536px) {
   .hero-frame {
-    --win-w: 60cqw;
+    --win-w: min(60cqw, calc(100cqw - var(--arm-min) - var(--win-gap)));
     /* Larger, not smaller: the window is bigger here, so a bigger fraction of
        it still shows the app at about the size it really opens at. */
     --win-scale: 0.64;

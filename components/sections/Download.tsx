@@ -164,7 +164,7 @@ export function CTA() {
         <p className="mt-5 text-base leading-[1.6] text-fg-2 sm:text-lg">
           Give it a name and a job. Everything after that happens on your machine.
         </p>
-        <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:gap-6">
+        <div className="mt-8 flex flex-col items-stretch justify-center gap-2 sm:flex-row sm:items-center sm:gap-6">
           <PrimaryButton href={RELEASES} external className="w-full sm:w-auto">
             Download botato
             <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-chip bg-white/15 text-white">
@@ -174,7 +174,7 @@ export function CTA() {
           </PrimaryButton>
           <Link
             href="/templates"
-            className="inline-flex items-center justify-center gap-2.5 text-base font-semibold text-fg-2 transition-colors hover:text-fg sm:justify-start"
+            className="inline-flex items-center justify-center gap-2.5 rounded-full py-3 text-base font-semibold text-fg-2 transition-colors hover:text-fg sm:justify-start sm:py-0"
           >
             <People className="h-5 w-5" />
             Explore bots from the community
