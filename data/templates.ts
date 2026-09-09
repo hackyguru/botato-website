@@ -25,7 +25,7 @@ export interface Template {
   blurb: string;
   color: string;
   tags: string[];
-  /** Who worked it out. Absent means it shipped with botcage. */
+  /** Who worked it out. Absent means it shipped with botato. */
   by?: string;
   /** May it have a desktop of its own? Off is the safer default, and most
    *  bots that only read and write do not need one. */

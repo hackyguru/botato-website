@@ -3,13 +3,13 @@ import BotFace from "@/components/BotFace";
 import BrandMark from "@/components/BrandMark";
 import BotDesktop from "@/components/BotDesktop";
 
-/* The botcage desktop window, playing one scene on a loop.
+/* The botato desktop window, playing one scene on a loop.
  *
  *  Built to the app's own measurements rather than to a rough likeness: the
  *  268px sidebar, the 34px gutter, the 26px composer, the desk row above
  *  everything, the docked computer as a third column, and the icons out of the
  *  app's own sprite. A message is a flat row with no bubble around it, because
- *  that is what botcage draws.
+ *  that is what botato draws.
  *
  *  The scene is five acts and answers one question - what is it actually like
  *  to have these things working for you:

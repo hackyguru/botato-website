@@ -1,6 +1,6 @@
 import { body } from "@/lib/blob";
 
-/** The botcage mark.
+/** The botato mark.
  *
  *  A character in the same family as the bots rather than a logo standing
  *  beside them: the same generated outline, the same two dots, the same light.

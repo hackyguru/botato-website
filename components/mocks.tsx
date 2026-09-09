@@ -8,7 +8,7 @@ import { Clock, Lock, Wave } from "@/components/icons";
 /* Stand-ins for the app, drawn rather than screenshotted so they stay sharp and
    stay honest. Every surface here is a rung of the app's own ladder - bg for
    the sidebar, bg-main for the conversation, panel for a sheet, field for
-   something you type in - and every string is something botcage actually does.
+   something you type in - and every string is something botato actually does.
 
    They are set in .app-ui, the app's type rather than the page's. */
 

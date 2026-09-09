@@ -28,7 +28,7 @@ function Watermark() {
               key={n}
               className="text-[6px] font-semibold tracking-tight text-white/[0.09]"
             >
-              botcage
+              botato
             </span>
           ))}
         </div>

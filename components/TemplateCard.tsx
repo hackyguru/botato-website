@@ -110,7 +110,7 @@ export default function TemplateCard({ template }: { template: Template }) {
           href={linkFor(template)}
           className="rounded-control bg-blue px-4 py-2 text-[13px] font-medium text-white transition-[filter] hover:brightness-[1.08]"
         >
-          Add to botcage
+          Add to botato
         </a>
         <button
           type="button"

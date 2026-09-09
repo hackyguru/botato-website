@@ -6,11 +6,11 @@ import { PhonePreview } from "@/components/mocks";
 import Link from "next/link";
 import { Apple, Arrow, Linux, People, Phone } from "@/components/icons";
 
-// The list rather than `releases/latest`: botcage is alpha and every release is
+// The list rather than `releases/latest`: botato is alpha and every release is
 // published as a pre-release, which is exactly what `latest` excludes — so that
 // URL is a 404 rather than a download.
-const RELEASES = "https://github.com/hackyguru/botcage/releases";
-const REPO = "https://github.com/hackyguru/botcage";
+const RELEASES = "https://github.com/hackyguru/botato/releases";
+const REPO = "https://github.com/hackyguru/botato";
 
 /** A pill for one platform's build. Two of them sit under the desktop card,
  *  because it is one app and two ways of getting it, not two products. */
@@ -127,7 +127,7 @@ export function Download() {
             Alpha, and every release is a pre-release: provided as is, with no
             warranty, and expect it to break. Bots answer through Claude Code by
             default and can be pointed at another model whenever you like. Everything
-            else botcage sets up for you the first time you need it.
+            else botato sets up for you the first time you need it.
           </p>
         </Reveal>
       </div>
@@ -166,7 +166,7 @@ export function CTA() {
         </p>
         <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center sm:gap-6">
           <PrimaryButton href={RELEASES} external className="w-full sm:w-auto">
-            Download botcage
+            Download botato
             <span className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-chip bg-white/15 text-white">
               <Arrow className="h-[18px] w-[18px] transition-transform duration-[420ms] ease-[cubic-bezier(.65,0,.35,1)] group-hover:translate-x-[165%]" />
               <Arrow className="absolute h-[18px] w-[18px] -translate-x-[165%] transition-transform duration-[420ms] ease-[cubic-bezier(.65,0,.35,1)] group-hover:translate-x-0" />

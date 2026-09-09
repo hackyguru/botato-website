@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Github } from "@/components/icons";
 
-const REPO = "https://github.com/hackyguru/botcage";
+const REPO = "https://github.com/hackyguru/botato";
 
 const COLUMNS = [
   {
@@ -36,7 +36,7 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(3,1fr)] lg:gap-8">
           <div>
-            <p className="text-lg font-semibold tracking-tight">botcage</p>
+            <p className="text-lg font-semibold tracking-tight">botato</p>
             <p className="mt-3 max-w-xs text-[13.5px] leading-[1.6] text-fg-3">
               Bots that live on your own machine. No account, no server of ours, no
               telemetry.
@@ -48,7 +48,7 @@ export default function Footer() {
               className="mt-5 inline-flex items-center gap-2 rounded-full bg-fill-2 px-3.5 py-2 text-[13px] font-medium text-fg transition-colors hover:bg-fill-3 hover:text-fg"
             >
               <Github className="h-4 w-4" />
-              hackyguru/botcage
+              hackyguru/botato
             </a>
           </div>
 
@@ -81,7 +81,7 @@ export default function Footer() {
           aria-hidden="true"
           className="mt-14 select-none text-[clamp(3.5rem,17vw,13rem)] font-medium leading-[0.8] tracking-[-0.055em] text-white/[0.07] sm:mt-20"
         >
-          botcage
+          botato
         </p>
 
         <div className="mt-8 flex flex-col gap-2 border-t border-line pt-6 text-[12.5px] text-fg-3 sm:flex-row sm:items-center sm:justify-between">

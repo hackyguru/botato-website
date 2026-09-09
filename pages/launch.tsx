@@ -1,4 +1,4 @@
-import Head from "next/head";
+import Seo from "@/components/Seo";
 import Link from "next/link";
 import { Inter, Instrument_Serif } from "next/font/google";
 import BrandMark from "@/components/BrandMark";
@@ -14,12 +14,12 @@ const instrumentSerif = Instrument_Serif({
 });
 
 const DESCRIPTION =
-  "botcage is an alpha you can download today: a workspace where the bots run on your own laptop, keep working with the lid shut and answer your phone from anywhere.";
+  "botato is an alpha you can download today: a workspace where the bots run on your own laptop, keep working with the lid shut and answer your phone from anywhere.";
 
-// The list rather than `releases/latest`: every botcage release is a
+// The list rather than `releases/latest`: every botato release is a
 // pre-release while it is alpha, and `latest` skips those — it is a 404.
-const RELEASES = "https://github.com/hackyguru/botcage/releases";
-const REPO = "https://github.com/hackyguru/botcage";
+const RELEASES = "https://github.com/hackyguru/botato/releases";
+const REPO = "https://github.com/hackyguru/botato";
 
 /** A run of prose under a heading. The post is the only page on the site with
  *  paragraphs rather than cards, so the measure is set here and nowhere else:
@@ -41,34 +41,32 @@ function Part({ title, children }: { title: string; children: React.ReactNode })
 export default function Launch() {
   return (
     <div className={`${inter.variable} ${instrumentSerif.variable} font-sans`}>
-      <Head>
-        <title>botcage is here - botcage</title>
-        <meta name="description" content={DESCRIPTION} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="botcage is here" />
-        <meta property="og:description" content={DESCRIPTION} />
-        <meta property="og:type" content="article" />
-        <meta name="theme-color" content="#000000" />
-      </Head>
+      <Seo
+        title="botato is here"
+        description={DESCRIPTION}
+        path="/launch"
+        type="article"
+        published="2026-09-07"
+      />
 
       <div className="min-h-svh bg-floor px-3 pb-3 pt-3 sm:px-4 sm:pb-4 sm:pt-4 md:px-6 md:pb-6 md:pt-6">
         <div className="flex flex-col gap-3 sm:gap-4 md:gap-6">
           <Panel tone="panel" className="px-5 py-10 sm:px-10 sm:py-14 lg:px-16">
             <header className="mx-auto flex max-w-6xl items-center gap-4">
-              <Link href="/" aria-label="botcage" className="flex shrink-0 items-center">
+              <Link href="/" aria-label="botato" className="flex shrink-0 items-center">
                 <BrandMark className="h-9 w-9" color="#f2f2f2" />
               </Link>
               <Link
                 href="/"
                 className="text-sm font-medium text-fg-2 transition-colors hover:text-fg"
               >
-                botcage
+                botato
               </Link>
               <Link
                 href="/#platforms"
                 className="ml-auto rounded-pill bg-fill-2 px-4 py-2 text-sm font-medium text-fg transition-colors hover:bg-fill-3"
               >
-                Get botcage
+                Get botato
               </Link>
             </header>
 
@@ -77,7 +75,7 @@ export default function Launch() {
                 Alpha &middot; 7 September 2026
               </p>
               <h1 className="text-3xl font-medium leading-[1.02] tracking-[-0.04em] text-fg sm:text-5xl">
-                botcage is <span className="font-serif font-normal italic">here</span>.
+                botato is <span className="font-serif font-normal italic">here</span>.
               </h1>
               <p className="mt-6 text-lg leading-[1.55] text-fg sm:text-xl">
                 A workspace where the bots run on your own laptop. They keep working with
@@ -92,7 +90,7 @@ export default function Launch() {
                   files, it learned nothing and tomorrow I will explain it all again.
                 </p>
                 <p>
-                  botcage is the other shape. A bot is not a box you type into: it is a
+                  botato is the other shape. A bot is not a box you type into: it is a
                   conversation that persists, with a folder on disk, a memory file it
                   keeps itself and - if you give it one - a computer of its own. Several
                   of them share rooms, so they read what the others said and answer each
@@ -178,7 +176,7 @@ export default function Launch() {
                 <p>
                   Pairing is a square the laptop shows and the phone scans. No account, no
                   tailnet, no port forwarding, nothing of ours in the middle. Leave the
-                  laptop plugged in and shut the lid and the bots carry on - botcage holds
+                  laptop plugged in and shut the lid and the bots carry on - botato holds
                   the machine awake for them and on a Mac it can keep the lid from
                   stopping it, with your permission.
                 </p>
@@ -188,12 +186,12 @@ export default function Launch() {
                 <p>
                   Claude Code is the default and the one that has been used in anger. A bot
                   can instead be pointed at the Gemini CLI, at Ollama on your own machine,
-                  or at any hosted model you have a key for. botcage keeps the transcript
+                  or at any hosted model you have a key for. botato keeps the transcript
                   itself, so a bot can change engine mid-conversation and carry the thread
                   across.
                 </p>
                 <p>
-                  What that means in practice: botcage ships no model. The subscription you
+                  What that means in practice: botato ships no model. The subscription you
                   are already paying for is the only one involved and there is no account
                   to make here, no server of ours and no telemetry.
                 </p>
@@ -214,7 +212,7 @@ export default function Launch() {
                   they call a tool correctly from a clean conversation and then, once their
                   own history contains a tool call written out as prose, will happily
                   imitate themselves instead of calling anything. Bigger models do not do
-                  this and nothing in botcage can stop a model that does.
+                  this and nothing in botato can stop a model that does.
                 </p>
               </Part>
 
@@ -232,7 +230,7 @@ export default function Launch() {
                     rel="noopener noreferrer"
                     className="rounded-pill bg-blue px-5 py-2.5 text-[15px] font-medium text-white transition-[filter] hover:brightness-[1.08]"
                   >
-                    Download botcage
+                    Download botato
                   </a>
                   <a
                     href={REPO}

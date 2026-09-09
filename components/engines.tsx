@@ -1,4 +1,4 @@
-/* Who answers your bots. botcage ships two CLI engines - Claude Code and
+/* Who answers your bots. botato ships two CLI engines - Claude Code and
    Gemini CLI - and an OpenAI-shaped route that reaches the whole models.dev
    catalogue plus Ollama on this machine, so this row is a sample rather than
    the whole list. Marks are 24x24 in currentColor, so they take the colour of

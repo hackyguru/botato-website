@@ -1,4 +1,4 @@
-import Head from "next/head";
+import Seo from "@/components/Seo";
 import Link from "next/link";
 import { Inter, Instrument_Serif } from "next/font/google";
 import BrandMark from "@/components/BrandMark";
@@ -14,11 +14,11 @@ const instrumentSerif = Instrument_Serif({
 });
 
 const UPDATED = "8 September 2026";
-const REPO = "https://github.com/hackyguru/botcage";
+const REPO = "https://github.com/hackyguru/botato";
 const LICENCE = "https://www.apache.org/licenses/LICENSE-2.0";
 
 const DESCRIPTION =
-  "The terms you accept by using botcage: it runs on your own machine, it is provided as is, your bots are your responsibility and liability is limited as far as the law allows.";
+  "The terms you accept by using botato: it runs on your own machine, it is provided as is and what your bots do is your responsibility.";
 
 /** A numbered clause. The measure is 65 characters, as on the launch post. */
 function Clause({
@@ -57,34 +57,31 @@ function Loud({ children }: { children: React.ReactNode }) {
 export default function Terms() {
   return (
     <div className={`${inter.variable} ${instrumentSerif.variable} font-sans`}>
-      <Head>
-        <title>Terms of use - botcage</title>
-        <meta name="description" content={DESCRIPTION} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="Terms of use" />
-        <meta property="og:description" content={DESCRIPTION} />
-        <meta property="og:type" content="article" />
-        <meta name="theme-color" content="#000000" />
-      </Head>
+      <Seo
+        title="Terms of use"
+        description={DESCRIPTION}
+        path="/terms"
+        type="article"
+      />
 
       <div className="min-h-svh bg-floor px-3 pb-3 pt-3 sm:px-4 sm:pb-4 sm:pt-4 md:px-6 md:pb-6 md:pt-6">
         <div className="flex flex-col gap-3 sm:gap-4 md:gap-6">
           <Panel tone="panel" className="px-5 py-10 sm:px-10 sm:py-14 lg:px-16">
             <header className="mx-auto flex max-w-6xl items-center gap-4">
-              <Link href="/" aria-label="botcage" className="flex shrink-0 items-center">
+              <Link href="/" aria-label="botato" className="flex shrink-0 items-center">
                 <BrandMark className="h-9 w-9" color="#f2f2f2" />
               </Link>
               <Link
                 href="/"
                 className="text-sm font-medium text-fg-2 transition-colors hover:text-fg"
               >
-                botcage
+                botato
               </Link>
               <Link
                 href="/#platforms"
                 className="ml-auto rounded-pill bg-fill-2 px-4 py-2 text-sm font-medium text-fg transition-colors hover:bg-fill-3"
               >
-                Get botcage
+                Get botato
               </Link>
             </header>
 
@@ -96,7 +93,7 @@ export default function Terms() {
                 Terms of <span className="font-serif font-normal italic">use</span>.
               </h1>
               <p className="mt-6 text-lg leading-[1.55] text-fg sm:text-xl">
-                botcage runs autonomous programs on your own computer, with your keys
+                botato runs autonomous programs on your own computer, with your keys
                 and your accounts. These terms set out what that means and where the
                 responsibility sits. Read them before you install it.
               </p>
@@ -111,7 +108,7 @@ export default function Terms() {
                   <li className="flex gap-2.5">
                     <span className="text-fg-3">1.</span>
                     <span>
-                      botcage runs on your machine. There is nothing of ours in
+                      botato runs on your machine. There is nothing of ours in
                       between and nothing of ours to fall back on.
                     </span>
                   </li>
@@ -131,7 +128,7 @@ export default function Terms() {
                   <li className="flex gap-2.5">
                     <span className="text-fg-3">4.</span>
                     <span>
-                      As far as the law allows, nobody behind botcage is liable to
+                      As far as the law allows, nobody behind botato is liable to
                       you for anything.
                     </span>
                   </li>
@@ -144,22 +141,22 @@ export default function Terms() {
 
               <Clause n={1} title="What these terms cover">
                 <p>
-                  In these terms, <strong className="font-medium text-fg">botcage</strong>{" "}
-                  means the botcage project: the desktop application, the phone
+                  In these terms, <strong className="font-medium text-fg">botato</strong>{" "}
+                  means the botato project: the desktop application, the phone
                   client, this website, the template gallery and the documentation.{" "}
                   <strong className="font-medium text-fg">We</strong> and{" "}
-                  <strong className="font-medium text-fg">us</strong> mean the botcage
+                  <strong className="font-medium text-fg">us</strong> mean the botato
                   project and the people who maintain and contribute to it.{" "}
                   <strong className="font-medium text-fg">You</strong> mean the person
                   or organisation using any of it.
                 </p>
                 <p>
                   You accept these terms by downloading, installing, running or using
-                  botcage, or by using this website. If you do not accept them, do not
+                  botato, or by using this website. If you do not accept them, do not
                   use it.
                 </p>
                 <p>
-                  The botcage software is released under the{" "}
+                  The botato software is released under the{" "}
                   <a
                     href={LICENCE}
                     target="_blank"
@@ -179,7 +176,7 @@ export default function Terms() {
 
               <Clause n={2} title="It is an alpha">
                 <p>
-                  botcage is unfinished software published early on purpose. It has
+                  botato is unfinished software published early on purpose. It has
                   defects. It will change in ways that are not compatible with what
                   came before. Features may be removed. Data written by one version may
                   not be readable by the next.
@@ -193,7 +190,7 @@ export default function Terms() {
 
               <Clause n={3} title="It runs on your computer, not ours">
                 <p>
-                  botcage has no account and no server of ours. It runs on hardware you
+                  botato has no account and no server of ours. It runs on hardware you
                   control, using your operating system, your container runtime, your
                   network and your credentials. Your bots, files, messages and keys
                   stay on your machine.
@@ -203,7 +200,7 @@ export default function Terms() {
                   bots are doing, cannot stop them, cannot recover a file, cannot reset
                   a key and cannot restore anything you lose. There is no switch we
                   hold. Backups are entirely your responsibility and so is the
-                  security of the machine botcage runs on.
+                  security of the machine botato runs on.
                 </p>
               </Clause>
 
@@ -238,7 +235,7 @@ export default function Terms() {
               </Clause>
 
               <Clause n={5} title="What you must not do">
-                <p>You must not use botcage, or let a bot use it, to:</p>
+                <p>You must not use botato, or let a bot use it, to:</p>
                 <ul className="ml-1 space-y-2 border-l border-line pl-5">
                   <li>break any law, or infringe anyone&rsquo;s rights;</li>
                   <li>
@@ -266,12 +263,12 @@ export default function Terms() {
                     harm;
                   </li>
                   <li>
-                    breach sanctions or export controls, or make botcage available to
+                    breach sanctions or export controls, or make botato available to
                     anyone they prohibit.
                   </li>
                 </ul>
                 <Loud>
-                  BOTCAGE IS NOT BUILT FOR HIGH RISK USE. YOU MUST NOT USE IT IN THE
+                  BOTATO IS NOT BUILT FOR HIGH RISK USE. YOU MUST NOT USE IT IN THE
                   OPERATION OF MEDICAL DEVICES, VEHICLES, AIRCRAFT, WEAPONS, CRITICAL
                   INFRASTRUCTURE, OR ANYWHERE ELSE ITS FAILURE COULD LEAD TO DEATH,
                   PERSONAL INJURY, OR SEVERE PROPERTY OR ENVIRONMENTAL DAMAGE.
@@ -280,7 +277,7 @@ export default function Terms() {
 
               <Clause n={6} title="Other people&rsquo;s services">
                 <p>
-                  botcage is a way of reaching services we do not run. The model that
+                  botato is a way of reaching services we do not run. The model that
                   answers a bot is one of them: Claude Code, Gemini CLI, Ollama on your
                   machine, or any of the providers reachable through an
                   OpenAI-compatible endpoint. So are the container runtime it needs,
@@ -294,14 +291,14 @@ export default function Terms() {
                   not control them, do not endorse them and are not responsible for
                   what they do, what they charge, what they do with your data, or
                   whether they keep working. If one of them changes or disappears,
-                  parts of botcage may stop working and that is not a defect we owe
+                  parts of botato may stop working and that is not a defect we owe
                   you a fix for.
                 </p>
               </Clause>
 
               <Clause n={7} title="Money">
                 <p>
-                  botcage is free. Most of what it reaches is not. You bring your own
+                  botato is free. Most of what it reaches is not. You bring your own
                   API keys and you pay whoever issued them, on their terms.
                 </p>
                 <p>
@@ -330,7 +327,7 @@ export default function Terms() {
 
               <Clause n={9} title="Reaching your machine from somewhere else">
                 <p>
-                  Pairing a phone opens a route to the copy of botcage on your
+                  Pairing a phone opens a route to the copy of botato on your
                   computer. It connects directly where the network allows and falls
                   back to public relays where it does not.
                 </p>
@@ -374,7 +371,7 @@ export default function Terms() {
 
               <Clause n={12} title="No warranty">
                 <Loud>
-                  BOTCAGE IS PROVIDED &ldquo;AS IS&rdquo; AND &ldquo;AS
+                  BOTATO IS PROVIDED &ldquo;AS IS&rdquo; AND &ldquo;AS
                   AVAILABLE&rdquo;, WITH ALL FAULTS AND WITHOUT WARRANTY OF ANY KIND.
                   TO THE FULLEST EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES,
                   EXPRESS, IMPLIED AND STATUTORY, INCLUDING ANY WARRANTY OF
@@ -383,11 +380,11 @@ export default function Terms() {
                   FROM COURSE OF DEALING, USAGE OR TRADE PRACTICE.
                 </Loud>
                 <p>
-                  We do not warrant that botcage will work, that it will meet your
+                  We do not warrant that botato will work, that it will meet your
                   requirements, that it will be available, uninterrupted, timely,
                   secure or free of error, that any defect will be corrected, or that
                   it is free of harmful components. No advice or information you get
-                  from us or from botcage, spoken or written, creates any warranty.
+                  from us or from botato, spoken or written, creates any warranty.
                 </p>
               </Clause>
 
@@ -397,7 +394,7 @@ export default function Terms() {
                   FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY OR
                   PUNITIVE DAMAGES, OR FOR ANY LOSS OF PROFITS, REVENUE, BUSINESS,
                   GOODWILL, DATA, FILES OR CREDENTIALS, ARISING OUT OF OR RELATING TO
-                  BOTCAGE, WHETHER IN CONTRACT, TORT, NEGLIGENCE, STRICT LIABILITY,
+                  BOTATO, WHETHER IN CONTRACT, TORT, NEGLIGENCE, STRICT LIABILITY,
                   STATUTE OR OTHERWISE, AND WHETHER OR NOT WE WERE ADVISED THAT SUCH
                   DAMAGES WERE POSSIBLE.
                 </Loud>
@@ -412,15 +409,15 @@ export default function Terms() {
                   pricing, security or availability of any third party.
                 </p>
                 <Loud>
-                  OUR TOTAL AGGREGATE LIABILITY FOR ALL CLAIMS RELATING TO BOTCAGE WILL
-                  NOT EXCEED THE GREATER OF (A) THE AMOUNT YOU PAID US FOR BOTCAGE IN
+                  OUR TOTAL AGGREGATE LIABILITY FOR ALL CLAIMS RELATING TO BOTATO WILL
+                  NOT EXCEED THE GREATER OF (A) THE AMOUNT YOU PAID US FOR BOTATO IN
                   THE TWELVE MONTHS BEFORE THE CLAIM AROSE, WHICH FOR FREE SOFTWARE IS
                   NOTHING, AND (B) FIFTY UNITED STATES DOLLARS.
                 </Loud>
                 <p>
                   These limits apply even if a limited remedy is found to have failed
                   of its essential purpose. They are a fundamental part of the basis on
-                  which botcage is offered: it is given away for nothing and it would
+                  which botato is offered: it is given away for nothing and it would
                   not be given away at all without them.
                 </p>
               </Clause>
@@ -443,11 +440,11 @@ export default function Terms() {
 
               <Clause n={15} title="You cover us">
                 <p>
-                  You will defend, indemnify and hold harmless the botcage project and
+                  You will defend, indemnify and hold harmless the botato project and
                   its maintainers and contributors from and against any claim, demand,
                   proceeding, damage, loss, liability, fine, penalty and cost,
                   including reasonable legal fees, arising out of or relating to your
-                  use of botcage, anything your bots did or failed to do, your breach
+                  use of botato, anything your bots did or failed to do, your breach
                   of these terms, your infringement of anyone&rsquo;s rights, your
                   breach of any law, or anything you submitted to the template gallery.
                 </p>
@@ -456,13 +453,13 @@ export default function Terms() {
               <Clause n={16} title="Changes and stopping">
                 <p>
                   We may change these terms. The date at the top changes when we do
-                  and continuing to use botcage after that is how you accept the new
-                  version. We may change, suspend or discontinue any part of botcage or
+                  and continuing to use botato after that is how you accept the new
+                  version. We may change, suspend or discontinue any part of botato or
                   this website at any time, without notice and without liability to
                   you.
                 </p>
                 <p>
-                  You may stop using botcage whenever you like. That is the only remedy
+                  You may stop using botato whenever you like. That is the only remedy
                   available to you if you are unhappy with it or with these terms.
                 </p>
               </Clause>
@@ -475,7 +472,7 @@ export default function Terms() {
                   partnership, joint venture or employment between us. There are no
                   third-party beneficiaries, except that the people named in clause 15
                   may rely on it. These terms, together with the Apache License 2.0,
-                  are the entire agreement between us about botcage and replace
+                  are the entire agreement between us about botato and replace
                   anything said before.
                 </p>
                 <p>
@@ -493,7 +490,7 @@ export default function Terms() {
               </Clause>
 
               <p className="mt-14 border-t border-line pt-6 text-[13px] leading-[1.6] text-fg-3">
-                botcage is alpha software that runs autonomous programs with your own
+                botato is alpha software that runs autonomous programs with your own
                 credentials. If you are not comfortable being responsible for what one
                 does, do not install it.
               </p>

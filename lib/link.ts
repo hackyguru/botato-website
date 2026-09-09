@@ -15,7 +15,7 @@
 import type { Template } from "@/data/templates";
 
 /** The scheme the desktop app registers. */
-export const SCHEME = "botcage";
+export const SCHEME = "botato";
 
 /** What the app is handed. Versioned because this crosses between two things
  *  that are updated separately: a link made today will be opened by an app

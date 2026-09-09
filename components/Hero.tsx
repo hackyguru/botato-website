@@ -214,7 +214,7 @@ export default function Hero() {
               className="hero-rise flex h-[var(--nav-h)] w-full items-center gap-3 rounded-2xl bg-white/70 py-2 pl-4 pr-2 shadow-sm backdrop-blur-md sm:w-auto sm:gap-6 sm:self-start lg:h-auto"
               style={{ "--hero-delay": "160ms" } as React.CSSProperties}
             >
-              <a href="#top" aria-label="botcage" className="flex shrink-0 items-center">
+              <a href="#top" aria-label="botato" className="flex shrink-0 items-center">
                 <BrandMark className="h-10 w-10" color="#131315" eye="rgba(255,255,255,0.92)" />
               </a>
               <nav
@@ -236,7 +236,7 @@ export default function Hero() {
                   href="#platforms"
                   className="rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-700 sm:px-5"
                 >
-                  Get botcage
+                  Get botato
                 </a>
               </div>
             </header>
@@ -263,7 +263,7 @@ export default function Hero() {
                   <span className="shrink-0 rounded-full border border-amber px-2 py-[3px] text-[10px] font-semibold uppercase tracking-[0.08em] text-amber">
                     Alpha
                   </span>
-                  <span className="shrink-0 font-semibold text-white">botcage is here</span>
+                  <span className="shrink-0 font-semibold text-white">botato is here</span>
                   {/* The invitation is the part a phone has no room for. */}
                   <span className="hidden text-white/25 sm:inline" aria-hidden="true">
                     ·
@@ -320,7 +320,7 @@ export default function Hero() {
                     </span>
                   </a>
                   <a
-                    href="https://github.com/hackyguru/botcage"
+                    href="https://github.com/hackyguru/botato"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2.5 text-base font-semibold text-white/85 drop-shadow-md transition-colors hover:text-white sm:justify-start"

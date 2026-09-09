@@ -1,4 +1,6 @@
-import Head from "next/head";
+import Link from "next/link";
+
+import Seo from "@/components/Seo";
 import { useState } from "react";
 import { Inter, Instrument_Serif } from "next/font/google";
 import BrandMark from "@/components/BrandMark";
@@ -39,38 +41,35 @@ export default function Templates() {
 
   return (
     <div className={`${inter.variable} ${instrumentSerif.variable} font-sans`}>
-      <Head>
-        <title>Templates - botcage</title>
-        <meta name="description" content={DESCRIPTION} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content="botcage templates" />
-        <meta property="og:description" content={DESCRIPTION} />
-        <meta name="theme-color" content="#000000" />
-      </Head>
+      <Seo
+        title="Templates"
+        description={DESCRIPTION}
+        path="/templates"
+      />
 
       <div className="min-h-svh bg-floor px-3 pb-3 pt-3 sm:px-4 sm:pb-4 sm:pt-4 md:px-6 md:pb-6 md:pt-6">
         <div className="flex flex-col gap-3 sm:gap-4 md:gap-6">
           <Panel tone="panel" className="px-5 py-10 sm:px-10 sm:py-14 lg:px-16">
             <header className="mx-auto flex max-w-6xl items-center gap-4">
-              <a
+              <Link
                 href="/"
-                aria-label="botcage"
+                aria-label="botato"
                 className="flex shrink-0 items-center"
               >
                 <BrandMark className="h-9 w-9" color="#f2f2f2" />
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/"
                 className="text-sm font-medium text-fg-2 transition-colors hover:text-fg"
               >
-                botcage
-              </a>
-              <a
+                botato
+              </Link>
+              <Link
                 href="/#platforms"
                 className="ml-auto rounded-pill bg-fill-2 px-4 py-2 text-sm font-medium text-fg transition-colors hover:bg-fill-3"
               >
-                Get botcage
-              </a>
+                Get botato
+              </Link>
             </header>
 
             <div className="mx-auto mt-12 grid max-w-6xl gap-10 sm:mt-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] lg:items-center lg:gap-14">
@@ -165,7 +164,7 @@ export default function Templates() {
               does: add it to{" "}
               <a
                 className="text-link transition-opacity hover:opacity-70"
-                href="https://github.com/hackyguru/botcage-website/blob/main/data/templates.ts"
+                href="https://github.com/hackyguru/botato-website/blob/main/data/templates.ts"
                 target="_blank"
                 rel="noopener noreferrer"
               >
