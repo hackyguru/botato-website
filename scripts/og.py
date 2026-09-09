@@ -1,65 +1,68 @@
-"""The share card, drawn from the same outline the site draws its mark with."""
-import json, math
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+"""The share card: black, with the mark in the middle of it.
 
-W, H, S = 1200, 630, 3          # supersampled, then downscaled
+Drawn from the outline lib/blob.ts generates rather than from a picture of
+one, so the potato here is the shape the site renders. Centred on the mark's
+own bounding box instead of its 100x100 layout box, because the generator
+leaves slack on whichever axis the body is narrower in, and centring the box
+would sit the logo slightly off.
+
+    python3 scripts/og.py
+"""
+import json
+import numpy as np
+from PIL import Image, ImageDraw
+
+W, H, S = 1200, 630, 4          # supersampled, then downscaled
+MARK = 200                      # the mark's height in final pixels
 SCRATCH = "/private/tmp/claude-501/-Users-guru-Desktop-indie-botcage/7c92e89a-73e0-4ea7-be92-668e97d3ee76/scratchpad"
 mark = json.load(open(f"{SCRATCH}/pebble.json"))
 
-FLOOR, SKIN, FG, FG2 = (12, 12, 12), (200, 160, 106), (242, 242, 242), (142, 142, 147)
+FLOOR, SKIN = (0, 0, 0), (200, 160, 106)
 img = Image.new("RGB", (W * S, H * S), FLOOR)
-d = ImageDraw.Draw(img)
 
-# A wash of the app's own accents, the way the hero has one.
-glow = Image.new("RGB", (W * S, H * S), FLOOR)
-g = ImageDraw.Draw(glow)
-for cx, cy, r, col in [
-    (0.16, 0.30, 0.55, (255, 90, 0)), (0.82, 0.22, 0.50, (10, 132, 255)),
-    (0.68, 0.90, 0.55, (191, 90, 242)), (0.34, 0.95, 0.45, (240, 178, 50)),
-]:
-    x, y, rr = cx * W * S, cy * H * S, r * H * S
-    g.ellipse([x - rr, y - rr, x + rr, y + rr], fill=col)
-glow = glow.filter(ImageFilter.GaussianBlur(radius=150 * S))
-img = Image.blend(img, glow, 0.22)
-d = ImageDraw.Draw(img)
+xs = [p[0] for p in mark["pts"]]
+ys = [p[1] for p in mark["pts"]]
+span = max(max(xs) - min(xs), max(ys) - min(ys))
+u = MARK * S / span                                   # pixels per outline unit
+ox = W * S / 2 - (min(xs) + max(xs)) / 2 * u
+oy = H * S / 2 - (min(ys) + max(ys)) / 2 * u
+at = lambda x, y: (ox + x * u, oy + y * u)
 
-# The mark, at the exact outline lib/blob.ts produces.
-MX, MY, MS = 104 * S, 128 * S, 3.7 * S          # box origin and units-per-point
-poly = [(MX + x * MS, MY + y * MS) for x, y in mark["pts"]]
-d.polygon(poly, fill=SKIN)
-shade = Image.new("RGB", img.size, FLOOR)
-sd = ImageDraw.Draw(shade)
-box = [MX, MY, MX + 100 * MS, MY + 100 * MS]
-sd.ellipse([box[0], MY + 46 * MS, box[2], box[3] + 30 * MS], fill=(0, 0, 0))
-mask = Image.new("L", img.size, 0)
-ImageDraw.Draw(mask).polygon(poly, fill=64)
-img.paste(Image.composite(shade, img, mask.point(lambda v: v)), (0, 0))
-d = ImageDraw.Draw(img)
-hi = Image.new("RGB", img.size, (255, 255, 255))
-hm = Image.new("L", img.size, 0)
-ImageDraw.Draw(hm).ellipse([MX + 6 * MS, MY + 2 * MS, MX + 62 * MS, MY + 52 * MS], fill=70)
-hm = hm.filter(ImageFilter.GaussianBlur(radius=14 * S))
+poly = [at(x, y) for x, y in mark["pts"]]
+ImageDraw.Draw(img).polygon(poly, fill=SKIN)
+
 clip = Image.new("L", img.size, 0)
 ImageDraw.Draw(clip).polygon(poly, fill=255)
-hm = Image.composite(hm, Image.new("L", img.size, 0), clip)
-img.paste(Image.composite(hi, img, hm), (0, 0))
+inside = np.asarray(clip, dtype=np.float32) / 255.0
+
+# The two washes BrandMark paints over the body, as Paints.tsx defines them and
+# resolved against the path's own bounding box, which is what an SVG gradient
+# with objectBoundingBox units means.
+bx0, by0 = at(min(xs), min(ys))
+bx1, by1 = at(max(xs), max(ys))
+bw, bh = bx1 - bx0, by1 - by0
+yy, xx = np.mgrid[0 : img.size[1], 0 : img.size[0]].astype(np.float32)
+fx, fy = (xx - bx0) / bw, (yy - by0) / bh
+
+base = np.asarray(img, dtype=np.float32)
+
+# face-lo: black, transparent at 45% of the height down to 0.22 at the foot.
+lo = np.clip((fy - 0.45) / 0.55, 0.0, 1.0) * 0.22 * inside
+base *= (1.0 - lo)[..., None]
+
+# face-hi: white, 0.34 at (32%, 22%) falling to nothing at 0.7 of the box.
+r = np.sqrt((fx - 0.32) ** 2 + (fy - 0.22) ** 2) / 0.70
+hi = np.clip(1.0 - r, 0.0, 1.0) * 0.34 * inside
+base = base + (255.0 - base) * hi[..., None]
+
+img = Image.fromarray(np.clip(base, 0, 255).astype(np.uint8))
+
 d = ImageDraw.Draw(img)
-
-er = mark["eyeR"] * MS
+er = mark["eyeR"] * u
+ey = oy + mark["eyeY"] * u
 for side in (-1, 1):
-    ex = MX + (50 + side * mark["eyeGap"]) * MS
-    ey = MY + mark["eyeY"] * MS
+    ex = ox + (50 + side * mark["eyeGap"]) * u
     d.ellipse([ex - er, ey - er, ex + er, ey + er], fill=(0, 0, 0))
-
-MEDIUM, REGULAR = 10, 0
-def font(size, weight=MEDIUM):
-    return ImageFont.truetype("/System/Library/Fonts/HelveticaNeue.ttc", size * S, index=weight)
-
-TX = MX + 100 * MS + 72 * S
-d.text((TX, 206 * S), "botato", font=font(120), fill=FG)
-d.text((TX, 352 * S), "Bots that live on your own machine.", font=font(38, REGULAR), fill=FG)
-d.text((TX, 410 * S), "Each one gets a memory, a schedule and a computer", font=font(32, REGULAR), fill=FG2)
-d.text((TX, 454 * S), "of its own. Shut the lid and they carry on.", font=font(32, REGULAR), fill=FG2)
 
 img.resize((W, H), Image.LANCZOS).save("public/og.png", "PNG", optimize=True)
 print("public/og.png written")
