@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useEffect, useRef } from "react";
 import BrandMark from "@/components/BrandMark";
 import { WorksWith } from "@/components/engines";
@@ -185,7 +184,9 @@ function GithubIcon({ className }: { className?: string }) {
   );
 }
 
-const LAUNCH_POST = "/launch";
+/** The film, on X. It says in eighty seconds what the launch post at /launch
+ *  takes a scroll to say, so it is what the badge in the hero opens. */
+const DEMO_VIDEO = "https://x.com/hackyguru/status/2099832421739102231";
 
 const NAV_LINKS = [
   { label: "Features", href: "#features" },
@@ -252,8 +253,10 @@ export default function Hero() {
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
               {/* Left: badge + headline */}
               <div className="shrink-0 text-white lg:max-w-lg xl:max-w-2xl">
-                <Link
-                  href={LAUNCH_POST}
+                <a
+                  href={DEMO_VIDEO}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="hero-rise group mb-4 inline-flex max-w-full items-center gap-2.5 rounded-full border border-white/20 bg-black/25 py-1.5 pl-2 pr-1.5 text-[12px] backdrop-blur-md transition-colors hover:border-white/30 hover:bg-black/35 sm:gap-3 sm:text-[13px]"
                   style={{ "--hero-delay": "300ms" } as React.CSSProperties}
                 >
@@ -268,11 +271,11 @@ export default function Hero() {
                   <span className="hidden text-white/25 sm:inline" aria-hidden="true">
                     ·
                   </span>
-                  <span className="hidden text-white/55 sm:inline">Read the launch post</span>
+                  <span className="hidden text-white/55 sm:inline">Watch the demo</span>
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white transition-colors group-hover:bg-white/20">
                     <ArrowUpRightIcon className="h-[13px] w-[13px]" />
                   </span>
-                </Link>
+                </a>
                 <h1 className="text-4xl font-medium leading-[0.98] tracking-[-0.045em] drop-shadow-lg sm:text-6xl lg:text-[3.5rem] xl:text-7xl">
                   <span className="slot-line">
                     <span
